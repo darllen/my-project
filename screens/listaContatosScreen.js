@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
+import axios from 'axios';
+
 
 const ListaContatosScreen = ({ navigation }) => {
+
+    const [dados, setDados] = useState([]);
+
+
+    useEffect(() => {
+        consultarDados();
+
+        function consultarDados() {
+            axios.get('http://localhost:3000/contatos')
+                .then(function (response) {
+                    setDados(response.data);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+        }
+    }, [])
+
+
     return (
         <View style={{ flex: 1, flexDirection: "colum" }}>
 
@@ -23,30 +43,26 @@ const ListaContatosScreen = ({ navigation }) => {
 
 
             <View style={{ flex: 8 }}>
-                <ListItem bottomDivider /* style={{alignItems: "center", backgroundColor: "pink" }} */
-                    onPress={() => navigation.navigate('AlterarContato')}>
-                    <Avatar rounded title="M" containerStyle={{ backgroundColor: "#c2c2c2" }} />
-                    <ListItem.Content>
-                        <ListItem.Title>Marcus Andrade</ListItem.Title>
-                        <ListItem.Subtitle>81 988553424</ListItem.Subtitle>
-                    </ListItem.Content>
-                </ListItem>
-                <ListItem bottomDivider
-                    onPress={() => navigation.navigate('AlterarContato')}>
-                    <Avatar rounded title="P" containerStyle={{ backgroundColor: "#7EAD94" }} />
-                    <ListItem.Content>
-                        <ListItem.Title>Patrícia Tavares</ListItem.Title>
-                        <ListItem.Subtitle>81 998765332</ListItem.Subtitle>
-                    </ListItem.Content>
-                </ListItem>
-                <ListItem
-                    onPress={() => navigation.navigate('AlterarContato')}>
-                    <Avatar rounded title="R" containerStyle={{ backgroundColor: "#648477" }} />
-                    <ListItem.Content>
-                        <ListItem.Title>Rodrigo Antunes</ListItem.Title>
-                        <ListItem.Subtitle>81 987765525</ListItem.Subtitle>
-                    </ListItem.Content>
-                </ListItem>
+
+                {
+                    dados.map((l, i) => (
+                        <ListItem key={i} bottomDivider onPress={() => navigation.navigate('AlterarContato', {
+                            nome: l.nome,
+                            telefone: l.telefone,
+                            email: l.email
+
+                        })
+                        }>
+                            <Avatar rounded title={l.nome[0]} containerStyle={{ backgroundColor: "#c2c2c2" }} />
+                            <ListItem.Content>
+                                
+                                <ListItem.Title>{l.nome}</ListItem.Title>
+                                <ListItem.Subtitle>{l.telefone}</ListItem.Subtitle>
+                            </ListItem.Content >
+                        </ListItem>
+                                              
+                    ))
+                }
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                 <Image style={{ width: 30, height: 30, margin: 20 }}
