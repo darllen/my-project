@@ -5,7 +5,6 @@ import HomeScreen from './screens/homeScreen';
 import CadastroScreen from './screens/cadastroScreen';
 import ListaContatosScreen from '/screens/listaContatosScreen';
 import CadastroContatoScreen from '/screens/cadastroContatoScreen';
-import AlterarContatoScreen from '/screens/alterarContatoScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +16,6 @@ function App() {
         <Stack.Screen name="Cadastro" component={CadastroScreen} options={{headerShown: false}}/>
         <Stack.Screen name="ListaContatos" component={ListaContatosScreen} options={{headerShown: false}} />
         <Stack.Screen name="CadastroContato" component={CadastroContatoScreen} options={{headerShown: false}} />
-        {<Stack.Screen name="AlterarContato" component={AlterarContatoScreen} options={{headerShown: false}} />}
       </Stack.Navigator>
     </NavigationContainer>
   );
