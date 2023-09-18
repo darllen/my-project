@@ -42,6 +42,13 @@ export default function CadastroContatoScreen({ route, navigation }) {
             .catch(error => { console.log(error); });
     }
 
+    function excluirContato(id) {
+        axios
+        .delete(HOST + id)
+        .then(response => { navigation.navigate('ListaContatos'); })
+        .catch(error => { console.log(error); });
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -95,7 +102,7 @@ export default function CadastroContatoScreen({ route, navigation }) {
                             <View style={styles.button}>
                                 <Button
                                     title="Excluir"
-                                    onPress={() => { atualizarContato(getId); }}
+                                    onPress={() => { excluirContato(getId); }}
                                     color='#D6D6D6'
                                 />
                             </View>
