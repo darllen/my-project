@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Image, View, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 export default function CadastroContatoScreen({ route, navigation }) {
 
@@ -28,11 +29,15 @@ export default function CadastroContatoScreen({ route, navigation }) {
             email: getEmail,
             telefone: getTelefone
         })
-            .then((response) => {
-                navigation.navigate('ListaContatos');
-                alert('Contato Cadastrado');
-            })
-            .catch(error => { console.log(error); });
+        .then(response => { 
+            showMessage({
+              message: "Cadastrado com sucesso!",
+              type: "success",
+            });
+    
+            navigation.navigate('ListaContatos');
+          })
+          .catch(error => { console.log(error); });
     }
 
     function atualizarContato(id) {
@@ -41,20 +46,34 @@ export default function CadastroContatoScreen({ route, navigation }) {
             email: getEmail,
             telefone: getTelefone
         })
-            .then(response => { navigation.navigate('ListaContatos'); })
+            .then(response => { 
+                showMessage({
+                    message: "Contato atualizado!",
+                    type: "success",
+                  });
+                navigation.navigate('ListaContatos'); 
+            })
             .catch(error => { console.log(error); });
     }
 
     function excluirContato(id) {
         axios
         .delete(HOST + id)
-        .then(response => { navigation.navigate('ListaContatos'); })
+        .then(response => { 
+            showMessage({
+                message: "Contato excluído!",
+                type: "success",
+              });
+            navigation.navigate('ListaContatos'); 
+        })
         .catch(error => { console.log(error); });
     }
 
     return (
         <View style={styles.container}>
+            <FlashMessage position="top" />
             <View style={styles.header}>
+            
                 <TouchableOpacity onPress={() => navigation.navigate('ListaContatos')}>
                     <Image
                         style={styles.headerImage}

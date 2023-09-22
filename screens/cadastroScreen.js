@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Image, View, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import axios from 'axios';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 
 export default function CadastroScreen({ route, navigation }){
@@ -34,20 +35,25 @@ export default function CadastroScreen({ route, navigation }){
       senha: getSenha,
     })
       .then(response => { 
+        showMessage({
+          message: "Cadastrado com sucesso!",
+          type: "success",
+        });
+
         navigation.navigate('Home');
-        alert('Usuário Cadastrado'); 
       })
       .catch(error => { console.log(error); });
   }
 
   return (
     <View style={styles.container}>
+      <FlashMessage position="top" />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Image
             style={styles.headerIcon}
             source={{
-              uri: 'https://cdn-icons-png.flaticon.com/512/8213/8213439.png',
+              uri: 'https://api.iconify.design/ep:arrow-left-bold.svg?color=%23FFFFFF',
             }}
           />
         </TouchableOpacity>
@@ -55,7 +61,7 @@ export default function CadastroScreen({ route, navigation }){
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.label}>Nome *</Text>
+        <Text style={styles.label}>Nome</Text>
         <TextInput
           onChangeText={nome => { setNome(nome); }}
           defaultValue={getNome}

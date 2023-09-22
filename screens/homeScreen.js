@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Alert, Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
-//import FlashMessage, { showMessage } from "react-native-flash-message";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 export default function HomeScreen({ navigation }){
 
@@ -18,12 +18,10 @@ export default function HomeScreen({ navigation }){
                 if (response.data.length != 0 ) {
                     navigation.navigate('ListaContatos');
                 } else {
-                    /* showMessage({
+                    showMessage({
                         message: "Credenciais inválidas",
-                        type: "Erro",
-                      }); */
-                    Alert.alert('Erro', 'Credenciais inválidas. Por favor, verifique seu email e senha.');
-                    alert('Credenciais inválidas');
+                        type: "danger",
+                      });
                 }
             })
             .catch((error) => {
@@ -34,7 +32,7 @@ export default function HomeScreen({ navigation }){
 
     return (
         <View style={styles.container}>
-            {/* <FlashMessage position="top" /> */}
+            <FlashMessage position="top" />
             <View style={styles.card}>
                 <Image
                     source={{
