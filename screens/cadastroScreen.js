@@ -5,13 +5,14 @@ import axios from 'axios';
 
 export default function CadastroScreen({ route, navigation }){
 
-    const HOST = 'http://localhost:3000/usuarios/';
+  const HOST = 'http://localhost:3000/usuarios/';
 
-  const [getId, setId] = useState('');
-  const [getNome, setNome] = useState('');
-  const [getCpf, setCpf] = useState('');
-  const [getEmail, setEmail] = useState('');
-  const [getTelefone, setTelefone] = useState('');
+  const [getId, setId] = useState();
+  const [getNome, setNome] = useState();
+  const [getCpf, setCpf] = useState();
+  const [getEmail, setEmail] = useState();
+  const [getTelefone, setTelefone] = useState();
+  const [getSenha, setSenha] = useState();
 
   useEffect(() => {
     if (route.params) {
@@ -20,6 +21,7 @@ export default function CadastroScreen({ route, navigation }){
       setCpf(route.params.cpf)
       setEmail(route.params.email);
       setTelefone(route.params.telefone);
+      setSenha(route.params.senha);
     }
   }, []);
 
@@ -28,7 +30,8 @@ export default function CadastroScreen({ route, navigation }){
       nome: getNome,
       cpf: getCpf,
       email: getEmail,
-      telefone: getTelefone
+      telefone: getTelefone,
+      senha: getSenha,
     })
       .then(response => { navigation.navigate('Home'); })
       .catch(error => { console.log(error); });
@@ -49,22 +52,28 @@ export default function CadastroScreen({ route, navigation }){
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.label}>Nome</Text>
+        <Text style={styles.label}>Nome *</Text>
         <TextInput
           onChangeText={nome => { setNome(nome); }}
           defaultValue={getNome}
           style={styles.input}
         />
-        <Text style={styles.label}>CPF *</Text>
+        <Text style={styles.label}>CPF </Text>
         <TextInput
           onChangeText={cpf => { setCpf(cpf); }}
           defaultValue={getCpf}
           style={styles.input}
         />
-        <Text style={styles.label}>Email</Text>
+        <Text style={styles.label}>Email *</Text>
         <TextInput
           onChangeText={email => { setEmail(email); }}
           defaultValue={getEmail}
+          style={styles.input}
+        />
+        <Text style={styles.label}>Senha *</Text>
+        <TextInput
+          onChangeText={senha => { setSenha(senha); }}
+          defaultValue={getSenha}
           style={styles.input}
         />
         <Text style={styles.label}>Telefone</Text>
@@ -122,17 +131,17 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
   },
   input: {
-    height: 45,
+    height: 40,
     width: '75%',
     borderRadius: 3,
     paddingLeft: 10,
     borderWidth: 0,
     backgroundColor: '#f2f2f2',
-    marginBottom: '7%',
+    marginBottom: '5%',
   },
   buttonContainer: {
     width: '50%',
-    margin: 5,
+    margin: 10,
   },
 });
 

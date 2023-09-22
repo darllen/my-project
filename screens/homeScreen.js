@@ -1,9 +1,40 @@
-import React from 'react';
-import { Text, Image, View, TextInput, Button, StyleSheet } from 'react-native';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { Alert, Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+//import FlashMessage, { showMessage } from "react-native-flash-message";
 
 export default function HomeScreen({ navigation }){
+
+    const ENDERECO_API = 'http://localhost:3000/usuarios';
+
+    const [email, setEmail] = useState();
+    const [senha, setSenha] = useState();
+
+
+    const validarLogin = () => {
+        
+        axios.get(ENDERECO_API + `?email=${email}&senha=${senha}`)
+            .then((response) => {
+                if (response.data.length != 0 ) {
+                    navigation.navigate('ListaContatos');
+                } else {
+                    /* showMessage({
+                        message: "Credenciais inválidas",
+                        type: "Erro",
+                      }); */
+                    Alert.alert('Erro', 'Credenciais inválidas. Por favor, verifique seu email e senha.');
+                    alert('Credenciais inválidas');
+                }
+            })
+            .catch((error) => {
+                console.error('Erro na requisição:', error);
+            });
+      };
+
+
     return (
         <View style={styles.container}>
+            {/* <FlashMessage position="top" /> */}
             <View style={styles.card}>
                 <Image
                     source={{
@@ -15,15 +46,18 @@ export default function HomeScreen({ navigation }){
                 <Text style={styles.title}>Login</Text>
                 <TextInput
                     style={styles.input}
+                    onChangeText={setEmail}
                 />
                 <Text style={styles.title}>Senha</Text>
                 <TextInput
                     style={styles.input}
+                    onChangeText={setSenha}
+                    secureTextEntry={true}
                 />
                 <View style={[styles.buttonContainer, { marginTop: '15%' }]}>
                     <Button
                         title="Login"
-                        onPress={() => navigation.navigate('ListaContatos')}
+                        onPress={validarLogin}
                         color='#97D5B1'
                     />
                 </View>

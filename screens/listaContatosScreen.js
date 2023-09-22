@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Text, Image, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { ListItem, Avatar } from 'react-native-elements';
-import axios from 'axios';
 import { useIsFocused } from '@react-navigation/core';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Avatar, ListItem } from 'react-native-elements';
 
 export default function ListaContatosScreen({ navigation }){
 
@@ -61,7 +61,14 @@ export default function ListaContatosScreen({ navigation }){
                     </ListItem>
                 ))}
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity
+                onPress={() =>
+                        navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Home' }],
+                    })
+                }
+            >
                 <Image
                     style={styles.footerImage}
                     source={{
