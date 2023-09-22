@@ -28,7 +28,10 @@ export default function CadastroContatoScreen({ route, navigation }) {
             email: getEmail,
             telefone: getTelefone
         })
-            .then(response => { navigation.navigate('ListaContatos'); })
+            .then((response) => {
+                navigation.navigate('ListaContatos');
+                alert('Contato Cadastrado');
+            })
             .catch(error => { console.log(error); });
     }
 

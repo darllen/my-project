@@ -33,7 +33,10 @@ export default function CadastroScreen({ route, navigation }){
       telefone: getTelefone,
       senha: getSenha,
     })
-      .then(response => { navigation.navigate('Home'); })
+      .then(response => { 
+        navigation.navigate('Home');
+        alert('Usuário Cadastrado'); 
+      })
       .catch(error => { console.log(error); });
   }
 

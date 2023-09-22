@@ -28,11 +28,28 @@ export default function ListaContatosScreen({ navigation }){
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+                <TouchableOpacity
+                    onPress={() =>
+                            navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Home' }],
+                        })
+                    }
+                >
+                    <Image
+                        style={styles.footerImage}
+                        source={{
+                            uri: 'https://api.iconify.design/ep:arrow-left-bold.svg?color=%23FFFFFF',
+                        }}
+                    />
+                </TouchableOpacity>
+
                 <Text style={styles.headerText}>Lista de Contatos</Text>
+                
                 <TouchableOpacity onPress={() => navigation.navigate('CadastroContato', { funcao: 'cadastrar' })}>
                     <Image
                         source={{
-                            uri: 'https://cdn-icons-png.flaticon.com/512/8213/8213565.png',
+                            uri: 'https://api.iconify.design/ep:circle-plus-filled.svg?color=%23FFFFFF',
                         }}
                         style={styles.headerImage}
                     />
@@ -61,21 +78,7 @@ export default function ListaContatosScreen({ navigation }){
                     </ListItem>
                 ))}
             </View>
-            <TouchableOpacity
-                onPress={() =>
-                        navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Home' }],
-                    })
-                }
-            >
-                <Image
-                    style={styles.footerImage}
-                    source={{
-                        uri: 'https://cdn-icons-png.flaticon.com/512/8213/8213439.png',
-                    }}
-                />
-            </TouchableOpacity>
+            
         </View>
     );
 };
@@ -102,6 +105,7 @@ const styles = StyleSheet.create({
     headerImage: {
         width: 30,
         height: 30,
+        
     },
     listaContatos: {
         flex: 8,
