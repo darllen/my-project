@@ -3,6 +3,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
+import FlashMessage, { showMessage } from "react-native-flash-message";
+import { getAuth, signOut } from "firebase/auth";
+
+
 
 export default function ListaContatosScreen({ navigation }){
 
@@ -25,17 +29,39 @@ export default function ListaContatosScreen({ navigation }){
             });
     }
 
+    function deslogar() {
+        const auth = getAuth();
+
+        
+
+        signOut(auth).then(() => {
+            showMessage({
+                message: "Até logo!",
+                type: "success",
+            });
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Home' }]
+            })
+            
+        }).catch((error) => {
+            showMessage({
+                message: "Error",
+                type: "danger",
+            });
+        });
+
+
+    }
+
     return (
         <View style={styles.container}>
+            <FlashMessage position="top" />
             <View style={styles.header}>
                 <TouchableOpacity
-                    onPress={() =>
-                            navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'Home' }],
-                        })
-                    }
+                    onPress={() => { deslogar(); }}
                 >
+                    
                     <Image
                         style={styles.footerImage}
                         source={{

@@ -1,33 +1,90 @@
 import axios from 'axios';
-import React, { useState } from 'react';
-import { Alert, Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import FlashMessage, { showMessage } from "react-native-flash-message";
+import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
-export default function HomeScreen({ navigation }){
+
+export default function HomeScreen({ navigation }) {
 
     const ENDERECO_API = 'http://localhost:3000/usuarios';
+
+    const provider = new GoogleAuthProvider();
 
     const [email, setEmail] = useState();
     const [senha, setSenha] = useState();
 
+    const firebaseConfig = {
+        apiKey: "AIzaSyAvIIGFGEg7pV4kJ2BSZyjIG4b3-OQ3AOU",
+        authDomain: "my-project-757bd.firebaseapp.com",
+        projectId: "my-project-757bd",
+        storageBucket: "my-project-757bd.appspot.com",
+        messagingSenderId: "860387209839",
+        appId: "1:860387209839:web:f5c8bf7c40f25eedad539a",
+        measurementId: "G-8VER03WY3D"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
 
     const validarLogin = () => {
-        
+
         axios.get(ENDERECO_API + `?email=${email}&senha=${senha}`)
             .then((response) => {
-                if (response.data.length != 0 ) {
+                if (response.data.length != 0) {
                     navigation.navigate('ListaContatos');
                 } else {
                     showMessage({
                         message: "Credenciais inválidas",
                         type: "danger",
-                      });
+                    });
                 }
             })
             .catch((error) => {
                 console.error('Erro na requisição:', error);
             });
-      };
+    };
+
+    function logar(email, password) {
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                navigation.navigate('ListaContatos');
+
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                showMessage({
+                    message: "Credenciais inválidas",
+                    type: "danger",
+                });
+            });
+    }
+
+    function logarGoogle(email, password) {
+        const auth = getAuth();
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+                navigation.navigate('ListaContatos');
+            }).catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData.email;
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                showMessage({
+                    message: "Algo deu errado",
+                    type: "danger",
+                });
+            });
+    }
 
 
     return (
@@ -55,7 +112,14 @@ export default function HomeScreen({ navigation }){
                 <View style={[styles.buttonContainer, { marginTop: '15%' }]}>
                     <Button
                         title="Login"
-                        onPress={validarLogin}
+                        onPress={() => { logar(email, senha); }}
+                        color='#97D5B1'
+                    />
+                </View>
+                <View style={[styles.buttonContainer]}>
+                    <Button
+                        title="Google"
+                        onPress={() => { logarGoogle(); }}
                         color='#97D5B1'
                     />
                 </View>
