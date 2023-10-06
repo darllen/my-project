@@ -8,7 +8,7 @@ import { getAuth, signOut } from "firebase/auth";
 
 
 
-export default function ListaContatosScreen({ navigation }){
+export default function ListaContatosScreen({ navigation }) {
 
     const HOST = 'http://localhost:3000/contatos/';
     const [dados, setDados] = useState([]);
@@ -32,8 +32,6 @@ export default function ListaContatosScreen({ navigation }){
     function deslogar() {
         const auth = getAuth();
 
-        
-
         signOut(auth).then(() => {
             showMessage({
                 message: "Até logo!",
@@ -43,7 +41,7 @@ export default function ListaContatosScreen({ navigation }){
                 index: 0,
                 routes: [{ name: 'Home' }]
             })
-            
+
         }).catch((error) => {
             showMessage({
                 message: "Error",
@@ -58,10 +56,7 @@ export default function ListaContatosScreen({ navigation }){
         <View style={styles.container}>
             <FlashMessage position="top" />
             <View style={styles.header}>
-                <TouchableOpacity
-                    onPress={() => { deslogar(); }}
-                >
-                    
+                <TouchableOpacity onPress={() => { deslogar(); }}                >
                     <Image
                         style={styles.footerImage}
                         source={{
@@ -71,7 +66,7 @@ export default function ListaContatosScreen({ navigation }){
                 </TouchableOpacity>
 
                 <Text style={styles.headerText}>Lista de Contatos</Text>
-                
+
                 <TouchableOpacity onPress={() => navigation.navigate('CadastroContato', { funcao: 'cadastrar' })}>
                     <Image
                         source={{
@@ -104,7 +99,7 @@ export default function ListaContatosScreen({ navigation }){
                     </ListItem>
                 ))}
             </View>
-            
+
         </View>
     );
 };
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
     headerImage: {
         width: 30,
         height: 30,
-        
+
     },
     listaContatos: {
         flex: 8,
