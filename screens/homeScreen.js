@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
@@ -90,47 +90,46 @@ export default function HomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <FlashMessage position="top" />
-            <View style={styles.card}>
-                <Image
-                    source={{
-                        uri: 'https://img.freepik.com/fotos-gratis/tiro-ao-ar-livre-de-mulher-de-cabelos-encaracolados-pensativa-fica-contra-o-edificio-urbano-escreve-informacoes-no-notebook-contem-caneta-e-bloco-de-notas-notas-texto-cria-novo-capitulo-o-livro-vestido-com-jumper-verde-casual_273609-62242.jpg?w=1380&t=st=1692966775~exp=1692967375~hmac=f9a03b22ede53deb59bf453436a50bd127484b773238c928983e02577f7bcd74',
-                    }}
-                    style={styles.image}
-                />
+            <Text style={styles.title1}>LogIn</Text>
 
-                <Text style={styles.title}>Login</Text>
+            <View style={styles.inputs}>
+                {/* <Text style={styles.title2}>Login</Text> */}
                 <TextInput
-                    style={styles.input}
                     onChangeText={setEmail}
-                />
-                <Text style={styles.title}>Senha</Text>
-                <TextInput
                     style={styles.input}
-                    onChangeText={setSenha}
-                    secureTextEntry={true}
+                    placeholder="exemplo@hotmail.com"
                 />
-                <View style={[styles.buttonContainer, { marginTop: '15%' }]}>
-                    <Button
-                        title="Login"
-                        onPress={() => { logar(email, senha); }}
-                        color='#97D5B1'
-                    />
-                </View>
-                <View style={[styles.buttonContainer]}>
-                    <Button
-                        title="Google"
-                        onPress={() => { logarGoogle(); }}
-                        color='#97D5B1'
-                    />
-                </View>
-                <View style={styles.buttonContainer}>
-                    <Button
-                        title="Cadastre-se"
-                        color='#D8D8D8'
-                        onPress={() => navigation.navigate('Cadastro')}
-                    />
-                </View>
+                {/* <Text style={styles.title2}>Senha</Text> */}
+                <TextInput
+                    onChangeText={setSenha}
+                    style={styles.input}
+                    secureTextEntry={true}
+                    placeholder="******"
+                />
             </View>
+            <View style={styles.buttons}>
+                <TouchableOpacity onPress={() => { logar(email, senha); }} style={[styles.buttonContainer, { backgroundColor: '#000' }]}>
+                    <Text style={styles.buttonText}>Entrar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.buttonContainer]} onPress={() => navigation.navigate('Cadastro')}>
+                    <Text style={[styles.buttonText, { color: '#000', fontSize: 13 }]}>
+                        Não tem uma conta? <Text style={{ textDecorationLine: 'underline' }}>Cadastre-se</Text>
+                    </Text>
+                </TouchableOpacity>
+
+                <View style={styles.divider}>
+                    <View style={styles.dividerLeft}><Text> </Text></View>                        
+                    <View style={styles.dividerCenter}>
+                        <Text style={[styles.title3, { color: 'rgba(0, 0, 0, 0.40)' }]}>   SingIn with   </Text>
+                    </View>
+                    <View style={styles.dividerRight}><Text> </Text></View>
+                </View>
+
+                <TouchableOpacity onPress={() => { logarGoogle(); }} style={[styles.buttonContainerGoogle]} >
+                    <Text style={[styles.buttonText, { color: '#000' }]}>Google</Text>
+                </TouchableOpacity>
+            </View>
+
         </View>
     );
 };
@@ -139,48 +138,88 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#97D5B1',
-        justifyContent: 'flex-end',
     },
-    card: {
-        flex: 0.92,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 10,
-        },
-        shadowOpacity: 0.4,
-        shadowRadius: 50,
-        paddingHorizontal: 20,
+    title1: {
+        fontSize: 30,
+        fontWeight: '750',
+        marginHorizontal: 30,
+        marginTop: 90,
     },
-    image: {
-        width: 150,
-        height: 150,
-        borderRadius: 100,
-        marginBottom: '7%',
-    },
-    title: {
+    title2: {
         fontWeight: 'bold',
         fontSize: 15,
         marginTop: '5%',
         width: '75%',
         marginBottom: '2%',
     },
+    title3: {
+        fontWeight: 500,
+        fontSize: 12,
+    },
+    inputs: {
+        alignItems: 'center',
+        marginTop: 100,
+    },
     input: {
-        height: 45,
-        width: '80%',
-        borderRadius: 3,
+        height: 52,
+        width: '85%',
+        borderRadius: 4,
         paddingLeft: 10,
-        borderWidth: 0,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#EBEBEB',
+        placeholderTextColor: '#ABABAB',
+        color: '#000',
+        margin: 13,
+    },
+    buttons: {
+        alignItems: 'center',
+        marginTop: 40,
     },
     buttonContainer: {
-        width: '55%',
-        marginVertical: 5,
+        height: 50,
+        width: '85%',
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
+    buttonContainerGoogle: {
+        height: 50,
+        width: '85%',
+        borderRadius: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        color: '#000',
+        borderColor: '#000',
+    },
+    buttonText: {
+        fontSize: 16, 
+        fontWeight: '600',
+        color: '#FFF',
+        textAlign: 'center',
+        letterSpacing: 1,
+    },
+    divider: {
+        width: '100%',
+        height: 50,
+        flexDirection: 'row',
+        color: "#d9d9d9",
+        paddingBottom: 24,
+        justifyContent: 'center',
+    },
+    dividerLeft: {
+        width: '40%',
+        borderBottomWidth: 1,
+        borderColor: '#d9d9d9',
+    },
+    dividerCenter: {
+        height: 50,
+        justifyContent: 'center',
+    },
+    dividerRight: {
+        width: '40%',
+        borderBottomWidth: 1,
+        borderColor: '#d9d9d9'
+    }
 });
 
