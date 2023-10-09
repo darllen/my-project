@@ -2,11 +2,11 @@ import axios from 'axios';
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import React, { useEffect, useState } from 'react';
-import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
-export default function CadastroScreen({ route, navigation }) {
+export default function Cadastro({ route, navigation }) {
 
   const HOST = 'http://localhost:3000/usuarios/';
 
@@ -87,55 +87,53 @@ export default function CadastroScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <FlashMessage position="top" />
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Image
-            style={styles.headerIcon}
-            source={{
-              uri: 'https://api.iconify.design/ep:arrow-left-bold.svg?color=%23FFFFFF',
-            }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Usuário</Text>
-      </View>
 
-      <View style={styles.content}>
-        <Text style={styles.label}>Nome</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Image
+          style={styles.icon}
+          source={{ uri: 'https://api.iconify.design/material-symbols:arrow-back-ios-new.svg', }}
+        />
+      </TouchableOpacity>
+
+      <Text style={styles.title1}>Sign-up</Text>
+
+      <View style={styles.inputs}>
         <TextInput
           onChangeText={nome => { setNome(nome); }}
           defaultValue={getNome}
           style={styles.input}
+          placeholder="seu nome"
         />
-        <Text style={styles.label}>CPF </Text>
         <TextInput
           onChangeText={cpf => { setCpf(cpf); }}
           defaultValue={getCpf}
           style={styles.input}
+          placeholder="123.456.789-12"
         />
-        <Text style={styles.label}>Email *</Text>
         <TextInput
           onChangeText={email => { setEmail(email); }}
           defaultValue={getEmail}
           style={styles.input}
+          placeholder="exemplo@hotmail.com"
         />
-        <Text style={styles.label}>Senha *</Text>
         <TextInput
           onChangeText={senha => { setSenha(senha); }}
+          secureTextEntry={true}
           defaultValue={getSenha}
           style={styles.input}
+          placeholder="******"
         />
-        <Text style={styles.label}>Telefone</Text>
         <TextInput
           onChangeText={telefone => { setTelefone(telefone); }}
           defaultValue={getTelefone}
           style={styles.input}
+          placeholder="(81) 99999-9999"
         />
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Salvar"
-            onPress={() => { cadastrar(getEmail, getSenha); }}
-            color='#97D5B1'
-          />
+
+        <View style={styles.buttons}>
+          <TouchableOpacity onPress={() => { cadastrar(getEmail, getSenha); }} style={[styles.buttonContainer, { backgroundColor: '#000' }]}>
+            <Text style={styles.buttonText}>Salvar</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -148,23 +146,28 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#ffffff',
   },
-  header: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#97D5B1',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerIcon: {
+  icon: {
     width: 30,
     height: 30,
+    marginTop: 40,
+    marginLeft: 20,
   },
-  headerText: {
-    fontWeight: 'bold',
+  title1: {
     fontSize: 30,
-    color: 'white',
-    marginRight: 35,
-    paddingLeft: 40,
+    fontWeight: '750',
+    marginHorizontal: 30,
+    marginTop: 40,
+  },
+  title2: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginTop: '5%',
+    width: '75%',
+    marginBottom: '2%',
+  },
+  title3: {
+    fontWeight: 500,
+    fontSize: 12,
   },
   content: {
     flex: 8,
@@ -178,18 +181,39 @@ const styles = StyleSheet.create({
     width: '75%',
     marginBottom: '2%',
   },
+  inputs: {
+    alignItems: 'center',
+    marginTop: 50,
+  },
   input: {
-    height: 40,
-    width: '75%',
-    borderRadius: 3,
+    height: 52,
+    width: '85%',
+    borderRadius: 4,
     paddingLeft: 10,
-    borderWidth: 0,
-    backgroundColor: '#f2f2f2',
-    marginBottom: '5%',
+    backgroundColor: '#F9F9F9',
+    placeholderTextColor: '#ABABAB',
+    color: '#000',
+    margin: 13,
+  },
+  buttons: {
+    width: '85%',
+    alignItems: 'center',
+    marginTop: 40,
+    backgroundColor: '#F9F9F9',
   },
   buttonContainer: {
-    width: '50%',
-    margin: 10,
+    height: 45,
+    width: '100%',
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFF',
+    textAlign: 'center',
+    letterSpacing: 1,
   },
 });
 

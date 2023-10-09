@@ -1,13 +1,13 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { Button, Image, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 
-export default function HomeScreen({ navigation }) {
+export default function Login({ navigation }) {
 
     const ENDERECO_API = 'http://localhost:3000/usuarios';
 
@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
+        backgroundColor: '#fff'
     },
     title1: {
         fontSize: 30,
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
         width: '85%',
         borderRadius: 4,
         paddingLeft: 10,
-        backgroundColor: '#EBEBEB',
+        backgroundColor: '#F9F9F9',
         placeholderTextColor: '#ABABAB',
         color: '#000',
         margin: 13,
