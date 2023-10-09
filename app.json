@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-project",
-    "slug": "my-project",
+    "name": "phonebook",
+    "slug": "phonebook",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
