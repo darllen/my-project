@@ -8,7 +8,7 @@ import { getAuth, signOut } from "firebase/auth";
 
 
 
-export default function ListaContatosScreen({ navigation }) {
+export default function ListaContatos({ navigation }) {
 
     const HOST = 'http://localhost:3000/contatos/';
     const [dados, setDados] = useState([]);
@@ -48,58 +48,50 @@ export default function ListaContatosScreen({ navigation }) {
                 type: "danger",
             });
         });
-
-
     }
 
     return (
         <View style={styles.container}>
             <FlashMessage position="top" />
+
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => { deslogar(); }}                >
-                    <Image
-                        style={styles.footerImage}
-                        source={{
-                            uri: 'https://api.iconify.design/ep:arrow-left-bold.svg?color=%23FFFFFF',
-                        }}
-                    />
-                </TouchableOpacity>
-
-                <Text style={styles.headerText}>Lista de Contatos</Text>
-
+                <Text style={styles.headerText}>phonebook</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('CadastroContato', { funcao: 'cadastrar' })}>
-                    <Image
-                        source={{
-                            uri: 'https://api.iconify.design/ep:circle-plus-filled.svg?color=%23FFFFFF',
-                        }}
-                        style={styles.headerImage}
-                    />
+                    <Image style={styles.headerImage} source={{ uri: 'https://api.iconify.design/material-symbols:add.svg', }} />
                 </TouchableOpacity>
             </View>
 
             <View style={styles.listaContatos}>
                 {dados.map((l, i) => (
-                    <ListItem
-                        key={i}
-                        bottomDivider
+                    <ListItem key={i} bottomDivider
                         onPress={() =>
                             navigation.navigate('CadastroContato', {
                                 id: l.id,
                                 nome: l.nome,
                                 telefone: l.telefone,
                                 email: l.email,
-                            })
-                        }
-                    >
+                            })}>
+
                         <Avatar rounded title={l.nome[0]} containerStyle={styles.avatarContainer} />
                         <ListItem.Content>
                             <ListItem.Title style={styles.listItemTitle}>{l.nome}</ListItem.Title>
                             <ListItem.Subtitle>{l.telefone}</ListItem.Subtitle>
                         </ListItem.Content>
+                        <Image style={[ styles.icon, { margin: 0, marginRight: 10}]} source={{ uri: 'https://api.iconify.design/material-symbols:call.svg', }} />
                     </ListItem>
                 ))}
             </View>
-
+            <View style={styles.footer}>
+                <TouchableOpacity>
+                    <Image style={styles.icon} source={{ uri: 'https://api.iconify.design/material-symbols:house.svg', }} />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                    <Image style={styles.icon} source={{ uri: 'https://api.iconify.design/material-symbols:call.svg', }} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { deslogar(); }}>
+                    <Image style={styles.icon} source={{ uri: 'https://api.iconify.design/material-symbols:exit-to-app.svg', }} />
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
@@ -108,35 +100,46 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "column",
+        backgroundColor: '#fff',
     },
     header: {
-        flex: 1,
+        height: 120,
         flexDirection: "row",
-        backgroundColor: '#97D5B1',
-        alignItems: "center",
-        justifyContent: 'center',
+        backgroundColor: '#F9F9F9',
+        justifyContent: "space-between",
+        alignItems: "flex-end",
+        paddingHorizontal: 25,
+        paddingTop: 1,
     },
     headerText: {
         fontWeight: 'bold',
         fontSize: 25,
-        color: 'white',
-        marginRight: 35,
-        paddingLeft: 40,
+        color: '#000',
+        paddingBottom: 15,
     },
     headerImage: {
         width: 30,
         height: 30,
-
+        marginBottom: 60,
     },
     listaContatos: {
         flex: 8,
     },
     avatarContainer: {
-        backgroundColor: "#c2c2c2",
+        backgroundColor: "#000",
     },
-    footerImage: {
+    icon: {
         width: 30,
         height: 30,
-        margin: 20,
+        margin: 20
     },
+    footer: {
+        height: 70,
+        backgroundColor: '#F9F9F9',
+        borderTopColor: '#c2c2c2',
+        borderTopWidth: 1,
+        flexDirection: 'row',
+        justifyContent: "space-between",
+    },
+
 });

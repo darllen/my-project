@@ -33,7 +33,6 @@ export default function Cadastro({ route, navigation }) {
 
   function cadastrar(email, password) {
     const auth = getAuth();
-    debugger
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
