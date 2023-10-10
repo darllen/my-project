@@ -18,18 +18,13 @@ export default function Cadastro({ route, navigation }) {
   const [getSenha, setSenha] = useState();
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAvIIGFGEg7pV4kJ2BSZyjIG4b3-OQ3AOU",
-    authDomain: "phonebook-757bd.firebaseapp.com",
-    projectId: "phonebook-757bd",
-    storageBucket: "phonebook-757bd.appspot.com",
-    messagingSenderId: "860387209839",
-    appId: "1:860387209839:web:f5c8bf7c40f25eedad539a",
-    measurementId: "G-8VER03WY3D"
+    apiKey: "AIzaSyBLdeFi7hO8XA_QGvbO6gM_v0vDKyikwbE",
+    authDomain: "phonebook-faa29.firebaseapp.com",
+    projectId: "phonebook-faa29",
+    storageBucket: "phonebook-821a2.appspot.com",
+    messagingSenderId: "876648332339",
+    appId: "1:876648332339:web:07368221a8bf1f08ec3746"
   };
-
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-
 
   function cadastrar(email, password) {
     const auth = getAuth();

@@ -17,14 +17,14 @@ export default function Login({ navigation }) {
     const [senha, setSenha] = useState();
 
     const firebaseConfig = {
-        apiKey: "AIzaSyAvIIGFGEg7pV4kJ2BSZyjIG4b3-OQ3AOU",
-        authDomain: "phonebook-757bd.firebaseapp.com",
-        projectId: "phonebook-757bd",
-        storageBucket: "phonebook-757bd.appspot.com",
-        messagingSenderId: "860387209839",
-        appId: "1:860387209839:web:f5c8bf7c40f25eedad539a",
-        measurementId: "G-8VER03WY3D",
-    };
+        apiKey: "AIzaSyCFJDKhqI20VHvbTzWzX3rG-2b-paMQ4OM",
+        authDomain: "phonebook-821a2.firebaseapp.com",
+        projectId: "phonebook-821a2",
+        storageBucket: "phonebook-821a2.appspot.com",
+        messagingSenderId: "676148577800",
+        appId: "1:676148577800:web:78625f4f2c8195d288b3bd",
+        measurementId: "G-03QJEXWH6Y"
+      };
 
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
@@ -120,7 +120,7 @@ export default function Login({ navigation }) {
                 <View style={styles.divider}>
                     <View style={styles.dividerLeft}><Text> </Text></View>                        
                     <View style={styles.dividerCenter}>
-                        <Text style={[styles.title3, { color: 'rgba(0, 0, 0, 0.40)' }]}>   SingIn with   </Text>
+                        <Text style={[styles.title3, { color: 'rgba(0, 0, 0, 0.40)' }]}>   sign-in with   </Text>
                     </View>
                     <View style={styles.dividerRight}><Text> </Text></View>
                 </View>

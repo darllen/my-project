@@ -1,13 +1,13 @@
 
 import * as ImagePicker from 'expo-image-picker';
-import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getStorage, list, ref, uploadBytes } from "firebase/storage";
-import React, { useState } from 'react';
-import { Button, Image, View, TouchableOpacity, Text, FlatList, ActivityIndicator } from 'react-native';
+import React, { useState }  from 'react';
+import { Button, Image, View, TouchableOpacity, Text, FlatList, ActivityIndicator,Linking } from 'react-native';
 import moment from "moment/moment";
 
-
+ 
 export default function Upload({ navigation }) {
 
     const [imageUri, setImageUri] = useState(null);
@@ -15,13 +15,13 @@ export default function Upload({ navigation }) {
     const [links, setLinks] = useState([]);
 
     const firebaseConfig = {
-        apiKey: "AIzaSyAvIIGFGEg7pV4kJ2BSZyjIG4b3-OQ3AOU",
-        authDomain: "phonebook-757bd.firebaseapp.com",
-        projectId: "phonebook-757bd",
-        storageBucket: "phonebook-757bd.appspot.com",
-        messagingSenderId: "860387209839",
-        appId: "1:860387209839:web:f5c8bf7c40f25eedad539a",
-        measurementId: "G-8VER03WY3D"
+        apiKey: "AIzaSyCFJDKhqI20VHvbTzWzX3rG-2b-paMQ4OM",
+        authDomain: "phonebook-821a2.firebaseapp.com",
+        projectId: "phonebook-821a2",
+        storageBucket: "phonebook-821a2.appspot.com",
+        messagingSenderId: "676148577800",
+        appId: "1:676148577800:web:78625f4f2c8195d288b3bd",
+        measurementId: "G-03QJEXWH6Y"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -51,10 +51,13 @@ export default function Upload({ navigation }) {
             return;
         }
 
+        // Create a root reference
         const storage = getStorage();
-        const fileName = generateRandomFilename()
+        const randomFilename = generateRandomFilename();
 
-        const mountainsRef = ref(storage, `${fileName}`);
+
+        // Create a reference to 'mountains.jpg'
+        const mountainsRef = ref(storage, randomFilename);
 
         const response = await fetch(imageUri);
         const blob = await response.blob();
@@ -67,32 +70,31 @@ export default function Upload({ navigation }) {
     function generateRandomFilename() {
         const randomString = generateRandomString(6);
         const currentTimestamp = moment(new Date()).format(
-            "MM_DD_YYYY_h_mm_ss_SSS"
+          "MM_DD_YYYY_h_mm_ss_SSS"
         );
         const randomNumber = Math.floor(Math.random() * 1000000);
         const fileExtension = "";
         const generatedRandomFilename = randomString + "_" + currentTimestamp + "_" + randomNumber + fileExtension;
         return generatedRandomFilename
-    }
-
-    function generateRandomString(stringLength) {
+      }
+    
+      function generateRandomString(stringLength) {
         let result = "";
         const alphaNumericCharacters =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         const alphabetsLength = alphaNumericCharacters.length;
         for (let i = 0; i < stringLength; i++) {
-            result += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphabetsLength));
+          result += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphabetsLength));
         }
         return result;
-    }
+      }
 
-    const LinkImage = async () => {
+    async function LinkImage() {
+        // Create a reference under which you want to list
         const storage = getStorage();
         const listRef = ref(storage);
-        const fileName = generateRandomFilename()
 
-        const firstPage = await list(listRef, fileName);
-
+        // Fetch the first page of 100.
         const newLinks = firstPage.items.map((item) => {
             return {
                 link: ('https://firebasestorage.googleapis.com/v0/b/' + item.bucket + '/o/' + item.fullPath + '?alt=media'),
@@ -101,7 +103,7 @@ export default function Upload({ navigation }) {
         });
 
         setLinks(newLinks);
-    };
+    }
 
     return (
 

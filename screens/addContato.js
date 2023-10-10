@@ -1,12 +1,12 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Text, Image, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import { getAnalytics } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
 import { getStorage, list, ref, uploadBytes } from "firebase/storage";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import moment from "moment/moment";
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
 export default function AddContato({ route, navigation }) {
 
@@ -14,13 +14,24 @@ export default function AddContato({ route, navigation }) {
 
     const { funcao } = route.params;
 
+    const [imageUri, setImageUri] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const [links, setLinks] = useState([]);
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCFJDKhqI20VHvbTzWzX3rG-2b-paMQ4OM",
+        authDomain: "phonebook-821a2.firebaseapp.com",
+        projectId: "phonebook-821a2",
+        storageBucket: "phonebook-821a2.appspot.com",
+        messagingSenderId: "676148577800",
+        appId: "1:676148577800:web:78625f4f2c8195d288b3bd",
+        measurementId: "G-03QJEXWH6Y"
+    };
+
     const [getId, setId] = useState();
     const [getNome, setNome] = useState();
     const [getEmail, setEmail] = useState();
     const [getTelefone, setTelefone] = useState();
-    const [imageUri, setImageUri] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const [links, setLinks] = useState([]);
 
     useEffect(() => {
         if (route.params) {
@@ -28,6 +39,7 @@ export default function AddContato({ route, navigation }) {
             setNome(route.params.nome);
             setEmail(route.params.email);
             setTelefone(route.params.telefone);
+            setImageUri(route.params.url);
         }
     }, []);
 
@@ -35,57 +47,69 @@ export default function AddContato({ route, navigation }) {
         axios.post(HOST, {
             nome: getNome,
             email: getEmail,
-            telefone: getTelefone
+            telefone: getTelefone,
+            url: imageUri
         })
-        .then(response => { 
-            showMessage({
-                message: "Cadastrado com sucesso!",
-                type: "success",
-            });
-            navigation.navigate('ListaContatos');
-        })
-        .catch(error => { console.log(error); });
+            .then(response => {
+                showMessage({
+                    message: "Cadastrado com sucesso!",
+                    type: "success",
+                });
+                navigation.navigate('ListaContatos');
+            })
+            .catch(error => { console.log(error); });
+
+        uploadImage(imageUri);
+
     }
 
     function atualizarContato(id) {
         axios.put(HOST + id, {
             nome: getNome,
             email: getEmail,
-            telefone: getTelefone
+            telefone: getTelefone,
+            url: imageUri
         })
-        .then(response => { 
-            showMessage({
-                message: "Contato atualizado!",
-                type: "success",
-            });
-            navigation.navigate('ListaContatos'); 
-        })
-        .catch(error => { console.log(error); });
+            .then(response => {
+                showMessage({
+                    message: "Contato atualizado!",
+                    type: "success",
+                });
+                navigation.navigate('ListaContatos');
+            })
+            .catch(error => { console.log(error); });
+
+        uploadImage(imageUri);
     }
 
     function excluirContato(id) {
         axios
-        .delete(HOST + id)
-        .then(response => { 
-            showMessage({
-                message: "Contato excluído!",
-                type: "success",
-            });
-            navigation.navigate('ListaContatos'); 
-        })
-        .catch(error => { console.log(error); });
+            .delete(HOST + id)
+            .then(response => {
+                showMessage({
+                    message: "Contato excluído!",
+                    type: "success",
+                });
+                navigation.navigate('ListaContatos');
+            })
+            .catch(error => { console.log(error); });
     }
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
+
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
+
         });
 
         if (!result.cancelled) {
+
             setImageUri(result.uri);
+            console.log(result.assets);
+
         }
     };
 
@@ -95,9 +119,13 @@ export default function AddContato({ route, navigation }) {
             return;
         }
 
+        // Create a root reference
         const storage = getStorage();
-        const fileName = generateRandomFilename()
-        const mountainsRef = ref(storage, `${fileName}`);
+        const randomFilename = generateRandomFilename();
+
+
+        // Create a reference to 'mountains.jpg'
+        const mountainsRef = ref(storage, randomFilename);
 
         const response = await fetch(imageUri);
         const blob = await response.blob();
@@ -109,29 +137,32 @@ export default function AddContato({ route, navigation }) {
 
     function generateRandomFilename() {
         const randomString = generateRandomString(6);
-        const currentTimestamp = moment(new Date()).format("MM_DD_YYYY_h_mm_ss_SSS");
+        const currentTimestamp = moment(new Date()).format(
+          "MM_DD_YYYY_h_mm_ss_SSS"
+        );
         const randomNumber = Math.floor(Math.random() * 1000000);
         const fileExtension = "";
         const generatedRandomFilename = randomString + "_" + currentTimestamp + "_" + randomNumber + fileExtension;
         return generatedRandomFilename
-    }
-
-    function generateRandomString(stringLength) {
+      }
+    
+      function generateRandomString(stringLength) {
         let result = "";
-        const alphaNumericCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const alphaNumericCharacters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         const alphabetsLength = alphaNumericCharacters.length;
         for (let i = 0; i < stringLength; i++) {
-            result += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphabetsLength));
+          result += alphaNumericCharacters.charAt(Math.floor(Math.random() * alphabetsLength));
         }
         return result;
-    }
+      }
 
-    const LinkImage = async () => {
+    async function LinkImage() {
+        // Create a reference under which you want to list
         const storage = getStorage();
         const listRef = ref(storage);
-        const fileName = generateRandomFilename()
-        const firstPage = await list(listRef, fileName);
 
+        // Fetch the first page of 100.
         const newLinks = firstPage.items.map((item) => {
             return {
                 link: ('https://firebasestorage.googleapis.com/v0/b/' + item.bucket + '/o/' + item.fullPath + '?alt=media'),
@@ -140,7 +171,7 @@ export default function AddContato({ route, navigation }) {
         });
 
         setLinks(newLinks);
-    };
+    }
 
     return (
         <View style={styles.container}>
@@ -155,21 +186,16 @@ export default function AddContato({ route, navigation }) {
 
             <View style={styles.avatar}>
                 {imageUri ? (
-                    <Image
-                        source={{ uri: imageUri }}
-                        style={{
-                            width: 100,
-                            height: 100,
-                            marginVertical: 20,
-                            borderRadius: 999
-                        }}
-                    />
+                    <TouchableOpacity style={styles.avatarDefault} onPress={pickImage}>
+                        <Image source={{ uri: imageUri }}
+                            style={{ width: 100, height: 100, marginVertical: 20, borderRadius: 999 }} />
+                    </TouchableOpacity>
                 ) : (
                     <TouchableOpacity style={styles.avatarDefault} onPress={pickImage}>
                         <Image style={styles.avatarDefaultIcon} source={{ uri: 'https://api.iconify.design/material-symbols:add-photo-alternate-outline.svg', }} />
                     </TouchableOpacity>
                 )}
-            </View>
+                </View>
 
             <View style={styles.content}>
                 <View style={styles.inputs}>
@@ -236,7 +262,7 @@ const styles = StyleSheet.create({
         height: 30,
         marginBottom: 25,
     },
-    avatarDefault:{
+    avatarDefault: {
         width: 100,
         height: 100,
         backgroundColor: '#dcdcdc',
@@ -244,11 +270,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    avatarDefaultIcon:{
+    avatarDefaultIcon: {
         width: 40,
         height: 40,
     },
-    avatar:{
+    avatar: {
         height: 150,
         alignItems: 'center',
         justifyContent: 'center',
@@ -291,7 +317,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        fontSize: 16, 
+        fontSize: 16,
         fontWeight: '600',
         color: '#FFF',
         textAlign: 'center',

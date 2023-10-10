@@ -1,7 +1,7 @@
 import { useIsFocused } from '@react-navigation/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import { getAuth, signOut } from "firebase/auth";
@@ -39,7 +39,7 @@ export default function ListaContatos({ navigation }) {
             });
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'Home' }]
+                routes: [{ name: 'Login' }]
             })
 
         }).catch((error) => {
@@ -60,27 +60,37 @@ export default function ListaContatos({ navigation }) {
                     <Image style={styles.headerImage} source={{ uri: 'https://api.iconify.design/material-symbols:add.svg', }} />
                 </TouchableOpacity>
             </View>
+            <ScrollView>
+                <View style={styles.listaContatos}>
+                    {dados.map((l, i) => (
+                        <ListItem key={i} bottomDivider
+                            onPress={() =>
+                                navigation.navigate('AddContato', {
+                                    id: l.id,
+                                    nome: l.nome,
+                                    telefone: l.telefone,
+                                    email: l.email,
+                                    url: l.url,
+                                })}>
 
-            <View style={styles.listaContatos}>
-                {dados.map((l, i) => (
-                    <ListItem key={i} bottomDivider
-                        onPress={() =>
-                            navigation.navigate('AddContato', {
-                                id: l.id,
-                                nome: l.nome,
-                                telefone: l.telefone,
-                                email: l.email,
-                            })}>
+                            {l.url ? (
+                                <Avatar rounded source={{ uri: l.url }} containerStyle={styles.avatarContainer} />
+                            ) : (
+                                <Avatar rounded title={l.nome[0]} containerStyle={styles.avatarContainer} />
+                            )}
 
-                        <Avatar rounded title={l.nome[0]} containerStyle={styles.avatarContainer} />
-                        <ListItem.Content>
-                            <ListItem.Title style={styles.listItemTitle}>{l.nome}</ListItem.Title>
-                            <ListItem.Subtitle>{l.telefone}</ListItem.Subtitle>
-                        </ListItem.Content>
-                        <Image style={[ styles.icon, { margin: 0, marginRight: 10}]} source={{ uri: 'https://api.iconify.design/material-symbols:call.svg', }} />
-                    </ListItem>
-                ))}
-            </View>
+                            <ListItem.Content>
+                                <ListItem.Title style={styles.listItemTitle}>{l.nome}</ListItem.Title>
+                                <ListItem.Subtitle>{l.telefone}</ListItem.Subtitle>
+                            </ListItem.Content>
+                            <Image
+                                style={[styles.icon, { margin: 0, marginRight: 10 }]}
+                                source={{ uri: 'https://api.iconify.design/material-symbols:call.svg' }}
+                            />
+                        </ListItem>
+                    ))}
+                </View>
+            </ScrollView>
             <View style={styles.footer}>
                 <TouchableOpacity>
                     <Image style={styles.icon} source={{ uri: 'https://api.iconify.design/material-symbols:house.svg', }} />
@@ -127,6 +137,9 @@ const styles = StyleSheet.create({
     },
     avatarContainer: {
         backgroundColor: "#000",
+        width: 50,
+        height: 50,
+        borderRadius: 999
     },
     icon: {
         width: 30,
@@ -134,7 +147,7 @@ const styles = StyleSheet.create({
         margin: 20
     },
     footer: {
-        height: 70,
+        height: 65,
         backgroundColor: '#F9F9F9',
         borderTopColor: '#c2c2c2',
         borderTopWidth: 1,
