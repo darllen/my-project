@@ -56,7 +56,7 @@ export default function ListaContatos({ navigation }) {
 
             <View style={styles.header}>
                 <Text style={styles.headerText}>phonebook</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('CadastroContato', { funcao: 'cadastrar' })}>
+                <TouchableOpacity onPress={() => navigation.navigate('AddContato', { funcao: 'cadastrar' })}>
                     <Image style={styles.headerImage} source={{ uri: 'https://api.iconify.design/material-symbols:add.svg', }} />
                 </TouchableOpacity>
             </View>
@@ -65,7 +65,7 @@ export default function ListaContatos({ navigation }) {
                 {dados.map((l, i) => (
                     <ListItem key={i} bottomDivider
                         onPress={() =>
-                            navigation.navigate('CadastroContato', {
+                            navigation.navigate('AddContato', {
                                 id: l.id,
                                 nome: l.nome,
                                 telefone: l.telefone,

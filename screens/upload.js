@@ -109,7 +109,9 @@ export default function Upload({ navigation }) {
             <Button title="Escolher Imagem" onPress={pickImage} />
             {imageUri && <Image source={{ uri: imageUri }} style={{
                 width: 200,
-                height: 200, marginVertical: 20
+                height: 200, 
+                marginVertical: 20,
+                borderRadius: 999
             }} />}
             {uploading ? (
                 <ActivityIndicator size="large" color="#0000ff" />

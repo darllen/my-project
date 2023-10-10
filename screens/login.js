@@ -23,7 +23,7 @@ export default function Login({ navigation }) {
         storageBucket: "phonebook-757bd.appspot.com",
         messagingSenderId: "860387209839",
         appId: "1:860387209839:web:f5c8bf7c40f25eedad539a",
-        measurementId: "G-8VER03WY3D"
+        measurementId: "G-8VER03WY3D",
     };
 
     const app = initializeApp(firebaseConfig);

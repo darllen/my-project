@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/login';
 import CadastroScreen from './screens/cadastro';
 import ListaContatosScreen from '/screens/listaContatos';
-import CadastroContatoScreen from '/screens/cadastroContatoScreen';
+import AddContatoScreen from '/screens/addContato';
 import UploadScreen from '/screens/upload';
 
 const Stack = createNativeStackNavigator();
@@ -16,7 +16,7 @@ function App() {
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Cadastro" component={CadastroScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ListaContatos" component={ListaContatosScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="CadastroContato" component={CadastroContatoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="AddContato" component={AddContatoScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Upload" component={UploadScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
